@@ -30,8 +30,8 @@ CAMERA_ORDER = [
     "CAM_BACK_RIGHT",
 ]
 
-CFG_PATH = os.environ.get("DD_CONFIG", "configs/diffusiondrive_config.py")
-CKPT_PATH = os.environ.get("DD_CHECKPOINT", "ckpts/diffusiondrive_stage2.pth")
+CFG_PATH = os.environ.get("DD_CONFIG", "configs/inference_e2e.py")
+CKPT_PATH = os.environ.get("DD_CHECKPOINT", "ckpts/diffusiondrive_nusc_stage2.pth")
 
 # ==========================
 # Pydantic models
