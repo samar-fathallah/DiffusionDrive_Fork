@@ -1,0 +1,34 @@
+ninja_required_version = 1.3
+cxx = c++
+nvcc = /usr/local/cuda/bin/nvcc
+
+cflags = -pthread -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -DOPENSSL_NO_SSL3 -fPIC -DWITH_CUDA -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/lib/python3.9/site-packages/torch/include -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/lib/python3.9/site-packages/torch/include/torch/csrc/api/include -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/lib/python3.9/site-packages/torch/include/TH -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/lib/python3.9/site-packages/torch/include/THC -I/usr/local/cuda/include -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/include -I/no_backups/s1479/.pyenv/versions/3.9.17/include/python3.9 -c
+post_cflags = -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=deformable_aggregation_ext -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++14
+cuda_cflags = -DWITH_CUDA -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/lib/python3.9/site-packages/torch/include -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/lib/python3.9/site-packages/torch/include/torch/csrc/api/include -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/lib/python3.9/site-packages/torch/include/TH -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/lib/python3.9/site-packages/torch/include/THC -I/usr/local/cuda/include -I/no_backups/s1479/.pyenv/versions/thesis_diffusion/include -I/no_backups/s1479/.pyenv/versions/3.9.17/include/python3.9 -c
+cuda_post_cflags = -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"'' -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=deformable_aggregation_ext -D_GLIBCXX_USE_CXX11_ABI=0 -gencode=arch=compute_61,code=compute_61 -gencode=arch=compute_61,code=sm_61 -std=c++14
+cuda_dlink_post_cflags = 
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+rule cuda_compile
+  depfile = $out.d
+  deps = gcc
+  command = $nvcc  $cuda_cflags -c $in -o $out $cuda_post_cflags
+
+
+
+
+
+build /misc/no_backups/s1479/DiffusionDrive/projects/mmdet3d_plugin/ops/build/temp.linux-x86_64-cpython-39/src/deformable_aggregation.o: compile /misc/no_backups/s1479/DiffusionDrive/projects/mmdet3d_plugin/ops/src/deformable_aggregation.cpp
+build /misc/no_backups/s1479/DiffusionDrive/projects/mmdet3d_plugin/ops/build/temp.linux-x86_64-cpython-39/src/deformable_aggregation_cuda.o: cuda_compile /misc/no_backups/s1479/DiffusionDrive/projects/mmdet3d_plugin/ops/src/deformable_aggregation_cuda.cu
+
+
+
+
+
+
+
